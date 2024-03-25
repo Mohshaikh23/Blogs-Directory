@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Markmap Mindmaps</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <h1>Markmap Mindmaps</h1>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="#" id="mindmap1">Mindmap 1</a></li>
+      <li><a href="#" id="mindmap2">Mindmap 2</a></li>
+      <!-- Add more mindmap links as needed -->
+    </ul>
+  </nav>
+  <main>
+    <aside>
+      <h2>Navigation</h2>
+      <ul>
+        <li><a href="#" id="mindmap1">Mindmap 1</a></li>
+        <li><a href="#" id="mindmap2">Mindmap 2</a></li>
+        <!-- Add more mindmap links as needed -->
+      </ul>
+    </aside>
+    <svg id="mindmap2"></svg>
+  </main>
+  <footer>
+    <p>&copy; 2024 Markmap. All rights reserved.</p>
+  </footer>
+
+  <!-- Include D3 and Markmap libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.16.0/dist/browser/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.16.0/dist/index.js"></script>
+
+  <!-- Include your JavaScript files -->
+  <script src="mindmapData.js"></script>
+  <script src="markmaputils.js"></script>
+
+
+</body>
+
+</html>

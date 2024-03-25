@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interactive Mind Map with Explanation Sidebar</title>
+  <meta charset="UTF-8">
+  <script src="https://unpkg.com/gojs/release/go-debug.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+    #menuBar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      background-color: #333;
+      overflow: hidden;
+      width: 150px; /* Adjust width as needed */
+      height: 100%; /* Full height */
+      padding-top: 20px; /* Space for the header */
+    }
+    #menuBar a {
+      display: block;
+      color: white;
+      padding: 16px;
+      text-decoration: none;
+    }
+    #menuBar a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+    #myDiagramDiv {
+      width: calc(100% - 150px); /* Adjust width to account for menu */
+      height: 600px;
+      border: 1px solid black;
+    }
+    #sidebar {
+      width: 300px; /* Adjust width as needed */
+      height: 100%;
+      background-color: #f1f1f1;
+      padding: 20px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      display: none;
+    }
+    #explanation {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="menuBar">
+    <a href="#" onclick="changeMindMapType('basic')">Basic Mind Map</a>
+    <a href="#" onclick="changeMindMapType('radial')">Radial Mind Map</a>
+    <a href="#" onclick="changeMindMapType('tree')">Tree Structure Mind Map</a>
+    <!-- Add more menu items for other mind map types -->
+  </div>
+  <div id="myDiagramDiv"></div>
+  <div id="sidebar">
+    <h2 id="selectedNodeTitle">Selected Node</h2>
+    <div id="explanation">
+      Select a node to see its explanation.
+    </div>
+  </div>
+  <script>
+    var myDiagram;
+    function init() {
+      var $ = go.GraphObject.make;
+
+      myDiagram =
+        $(go.Diagram, "myDiagramDiv",
+          {
+            "undoManager.isEnabled": true, // enable undo & redo
+            "allowMove": false, // disable node movement
+            "allowCopy": false, // disable node copying
+            "allowDelete": false, // disable node deletion
+            "allowInsert": false, // disable node insertion
+            "click": function(e) {
+              showExplanation(e);
+            }
+          });
+
+      // Define a simple Node template
+      myDiagram.nodeTemplate =
+        $(go.Node, "Auto",
+          $(go.Shape, "Rectangle",
+            { fill: "lightblue" }),
+          $(go.TextBlock,
+            { margin: 8 },
+            new go.Binding("text", "text"))
+        );
+
+      // Create the main topic node
+      myDiagram.model = new go.GraphLinksModel(
+        [
+          { key: "Main Topic", text: "Main Topic" },
+          // Add more levels of hierarchy
+          { key: "Subtopic A", text: "Subtopic A", parent: "Main Topic" },
+          { key: "Subtopic B", text: "Subtopic B", parent: "Main Topic" },
+          { key: "Subtopic C", text: "Subtopic C", parent: "Main Topic" },
+          { key: "Sub-subtopic A1", text: "Sub-subtopic A1", parent: "Subtopic A" },
+          { key: "Sub-subtopic A2", text: "Sub-subtopic A2", parent: "Subtopic A" },
+          { key: "Sub-subtopic B1", text: "Sub-subtopic B1", parent: "Subtopic B" }
+          // Add more nodes as needed
+        ]);
+    }
+
+    // Function to change the mind map type based on user selection
+    function changeMindMapType(mindMapType) {
+      var layout = null;
+      switch (mindMapType) {
+        case "basic":
+          layout = go.TreeLayout;
+          break;
+        case "radial":
+          layout = go.CircularLayout;
+          break;
+        case "tree":
+          layout = go.LayeredDigraphLayout;
+          break;
+        // Add more cases for other mind map types
+      }
+      if (layout) {
+        myDiagram.layout = $(layout);
+      }
+    }
+
+    // Function to show explanation for the selected node
+function showExplanation(e) {
+var node = e.diagram.selection.first();
+var explanation = document.getElementById("explanation");
+if (node) {
+document.getElementById("selectedNodeTitle").innerText = "Selected Node: " + node.data.text;
+explanation.innerText = "Explanation for " + node.data.text + " goes here.";
+} else {
+document.getElementById("selectedNodeTitle").innerText = "Selected Node";
+explanation.innerText = "Select a node to see its explanation.";
+}
+}
+// Call init() after the page has finished loading
+window.onload = function() {
+  init();
+}
